@@ -63,8 +63,8 @@
 @endsection
 
 @php
-    $positions_array = \App\Models\VotingPosition::select('position_name')->where('election_id', $election->id)->orderBy('id')->pluck('position_name');
-    $positions_array2 = \App\Models\VotingPosition::select('id')->where('election_id', $election->id)->orderBy('id')->pluck('id');
+    $positions_array = ($election) ? \App\Models\VotingPosition::select('position_name')->where('election_id', $election->id)->orderBy('id')->pluck('position_name') : null;
+    $positions_array2 = ($election) ? \App\Models\VotingPosition::select('id')->where('election_id', $election->id)->orderBy('id')->pluck('id') : [];
 
     $result_array = [];
 
