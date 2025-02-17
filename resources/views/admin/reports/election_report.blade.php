@@ -8,9 +8,15 @@
         <div class="app-content"> <!--begin::Container-->
             <div class="container-fluid"> <!--begin::Row-->
 
+                <x-notifications :messages="Session::get('error')" :type="0"/>
+
+                <x-notifications :messages="Session::get('success')" :type="1"/>
+
+                <x-notifications :messages="$errors->all()"/>
+
                 <div class="card mb-4">
                     <div class="card-header">
-                        <h3 class="card-title">Report @isset($votes)- {{ $votes[0]->election_name }} @endisset</h3>
+                        <h3 class="card-title">Report @isset($votes)- {{ ($votes->count() > 0) ? $votes[0]->election_name : 'No Votes' }} @endisset</h3>
                         <div class="card-tools">
                             <ul class="pagination pagination-sm float-end">
                                 <li class="page-item">
@@ -46,7 +52,7 @@
                                                 <td>{{ $vote->candidate_name }}</td>
                                                 <td>{{ $vote->position_name }}</td>
                                                 <td>{{ $vote->votes }}</td>
-                                                <td>{{ $vote->votes }}</td>
+                                                <td>{{ ($vote->votes / $total_votes->where('voting_position_id', $position->id)) * 100 }}%</td>
                                             </tr>
                                         @empty
                                             <tr>
@@ -63,7 +69,9 @@
                         </div> <!-- /.card-body -->
                     @endisset
                 </div> <!-- /.card -->
-                <a href="print_election_report/{{ $votes[0]->election_id }}" class="btn btn-primary float-end"> <i class="bi bi-printer-fill"></i> Printer</a>
+                @if(($votes->count() > 0))
+                    <a href="print_election_report/{{ $votes[0]->election_id }}" class="btn btn-primary float-end"> <i class="bi bi-printer-fill"></i> Printer</a>
+                @endif
             </div> <!--end::Container-->
         </div> <!--end::App Content-->
     </main> <!--end::App Main--> <!--begin::Footer-->

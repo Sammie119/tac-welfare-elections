@@ -51,7 +51,7 @@
                             <td>{{ $vote->candidate_name }}</td>
                             <td>{{ $vote->position_name }}</td>
                             <td>{{ $vote->votes }}</td>
-                            <td>{{ $vote->votes }}</td>
+                            <td>{{ ($vote->votes / $total_votes->where('voting_position_id', $position->id)) * 100 }}%</td>
                         </tr>
                     @empty
                         <tr>

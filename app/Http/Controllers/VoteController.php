@@ -67,7 +67,12 @@ class VoteController extends Controller
     public function getGenerate(Request $request)
     {
 //        dd($request->all());
+
         $data['votes'] = DB::table('vw_votes')->where('election_id', $request->election_id)->get();
+        $data['total_votes'] = DB::table('vw_votes')->selectRaw("voting_position_id, sum(votes) as total_votes")
+            ->where('election_id', $request->election_id)
+            ->groupBy('voting_position_id')
+            ->get();
         $data['voting_positions'] = VotingPosition::select('id', 'position_name')->where('election_id', $request->election_id)->get();
         return view('admin.reports.election_report', $data);
     }
@@ -95,6 +100,10 @@ class VoteController extends Controller
     public function printElectionReport($election_id)
     {
         $data['votes'] = DB::table('vw_votes')->where('election_id', $election_id)->get();
+        $data['total_votes'] = DB::table('vw_votes')->select('voting_position_id', 'sum(votes) as total_votes')
+            ->where('election_id', $election_id)
+            ->groupBy('voting_position_id')
+            ->get();
         $data['voting_positions'] = VotingPosition::select('id', 'position_name')->where('election_id', $election_id)->get();
         return view('admin.reports.print_election_report', $data);
     }
