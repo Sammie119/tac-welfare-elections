@@ -17,6 +17,7 @@
     /*    background-color: #dddddd;*/
     /*}*/
 </style>
+
 <body>
 
     <div>
@@ -51,7 +52,9 @@
                             <td>{{ $vote->candidate_name }}</td>
                             <td>{{ $vote->position_name }}</td>
                             <td>{{ $vote->votes }}</td>
-                            <td>{{ ($vote->votes / $total_votes->where('voting_position_id', $position->id)) * 100 }}%</td>
+                            @foreach($total_votes->where('voting_position_id', $position->id) as $t_votes)
+                                <td>{{ ($vote->votes / (int) $t_votes->total_votes) * 100 }}%</td>
+                            @endforeach
                         </tr>
                     @empty
                         <tr>
@@ -76,3 +79,14 @@
 
 </body>
 </html>
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+<script>
+        window.addEventListener("afterprint", function(event) {
+        window.close()
+        {{--window.location = "{{ url()->previous() }}";--}}
+    })
+        window.print()
+</script>
+

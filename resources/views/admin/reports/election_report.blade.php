@@ -52,7 +52,9 @@
                                                 <td>{{ $vote->candidate_name }}</td>
                                                 <td>{{ $vote->position_name }}</td>
                                                 <td>{{ $vote->votes }}</td>
-                                                <td>{{ ($vote->votes / $total_votes->where('voting_position_id', $position->id)) * 100 }}%</td>
+                                                @foreach($total_votes->where('voting_position_id', $position->id) as $t_votes)
+                                                    <td>{{ ($vote->votes / (int) $t_votes->total_votes) * 100 }}%</td>
+                                                @endforeach
                                             </tr>
                                         @empty
                                             <tr>
@@ -70,7 +72,8 @@
                     @endisset
                 </div> <!-- /.card -->
                 @if(($votes->count() > 0))
-                    <a href="print_election_report/{{ $votes[0]->election_id }}" class="btn btn-primary float-end"> <i class="bi bi-printer-fill"></i> Printer</a>
+                    <a href="print_election_report/{{ $votes[0]->election_id }}" onclick="window.open(this.href, 'Snopzer',
+'left=0,top=0,width=850,height=600,toolbar=0,scrollbars=0,status =0'); return false;" class="btn btn-primary float-end"> <i class="bi bi-printer-fill"></i> Printer</a>
                 @endif
             </div> <!--end::Container-->
         </div> <!--end::App Content-->

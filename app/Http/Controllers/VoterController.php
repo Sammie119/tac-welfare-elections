@@ -25,6 +25,7 @@ class VoterController extends Controller
      */
     public function store(Request $request)
     {
+        set_time_limit(0);
 //        dd($request->all());
         if(isset($request->file)){
             $request->validate([
