@@ -167,6 +167,13 @@
         );
         sales_chart.render();
     </script> <!-- jsvectormap -->
+
+    <script>
+        window.setTimeout( function() {
+            window.location.reload();
+            // alert("Hello");
+        }, 30000);
+    </script>
 @endsection
 
 

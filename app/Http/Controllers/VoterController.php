@@ -108,12 +108,11 @@ class VoterController extends Controller
     public function getVoterRegisterSearch(Request $request)
     {
         $election = ElectionSettings::select('id')->where('status', '<=', 1)->first()->id;
-        $voter = Voter::where('name', 'LIKE', '%'.$request['search'].'%')
-            ->orWhere('voters_id', 'LIKE', '%'.$request['search'].'%')
-            ->orWhere('mobile_number', 'LIKE', '%'.$request['search'].'%')
-            ->where('election_id', $election)
-            ->orderBy('name')->limit(10)->get();
 
+        $voter = Voter::where('election_id', $election)
+            ->whereRaw("(name LIKE  '%".$request['search']."%' OR voters_id LIKE '%".$request['search']."%' OR mobile_number LIKE '%". $request['search']. "%')")
+            ->orderBy('name')->limit(10)->get();
+//        dd($voter);
         if($voter){
             foreach ($voter as $key => $vote) {
                 echo '
